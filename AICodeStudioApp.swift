@@ -30,7 +30,7 @@ enum AIProvider: String, CaseIterable, Codable, Identifiable {
         case .anthropic:
             return ["claude-3-5-sonnet-20241022", "claude-3-opus-20240229", "claude-3-sonnet-20240229", "claude-3-haiku-20240307"]
         case .google:
-            return ["gemini-1.5-pro", "gemini-1.5-flash", "gemini-pro"]
+            return ["gemini-1.5-pro", "gemini-1.5-flash", "gemini-1.5-flash-8b", "gemini-2.0-flash-exp"]
         case .mistral:
             return ["mistral-large-latest", "mistral-medium-latest", "mistral-small-latest", "open-mixtral-8x22b"]
         }

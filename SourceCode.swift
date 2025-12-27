@@ -134,7 +134,7 @@ class GitHubClient: ObservableObject {
         req.httpMethod = method
         req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         req.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
-        // User-Agent is often required by GitHub API
+        // User-Agent is required by GitHub API
         req.setValue("iosflyapp", forHTTPHeaderField: "User-Agent")
         return req
     }
@@ -205,7 +205,7 @@ struct ContentView: View {
         guard !config.token.isEmpty else { client.statusMessage = "No Token"; return }
         
         // 1. Generate Project.yml dynamically
-        // FIX: Added xcodeVersion to prevent "Format 77" errors on cloud builders
+        // FIX: Added xcodeVersion: "15.0" below to force compatibility with GitHub Runners
         let projectYml = """
         name: \(appName)
         options:

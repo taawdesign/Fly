@@ -8,17 +8,19 @@ on:
         required: true
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       
-      - name: Build iOS App
+      - name: Build App
         run: |
-          # Your build commands here
+          echo "Building ${{ github.event.inputs.file_name }}"
+          # Add your build commands here
           
       - name: Upload to Appetize
         env:
           APPETIZE_TOKEN: ${{ secrets.APPETIZE_TOKEN }}
         run: |
-          # Upload .app to Appetize.io
+          # Upload to Appetize.io
+          echo "Uploading to Appetize"

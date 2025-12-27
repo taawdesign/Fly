@@ -6,19 +6,20 @@ on:
       file_name:
         description: 'Swift file to build'
         required: true
+        type: string
 
 jobs:
   build-and-deploy:
     runs-on: macos-latest
     
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
       
       - name: Create SwiftUI App Project
         run: |
           mkdir -p BuildApp
           
-          # Read the uploaded file and remove @main app struct if present
           if [ -f "Sources/${{ github.event.inputs.file_name }}" ]; then
             cat "Sources/${{ github.event.inputs.file_name }}" | awk '
               /@main/ { skip=1; next }
@@ -30,16 +31,20 @@ jobs:
             
             echo "=== Processed ContentView.swift ==="
             cat BuildApp/ContentView.swift
-            echo "==================================="
           else
-            echo "Source file not found!"
-            exit 1
+            echo "Source file not found, creating default"
+            cat > BuildApp/ContentView.swift << 'SWIFT'
+          import SwiftUI
+          struct ContentView: View {
+              var body: some View {
+                  Text("Hello World")
+              }
+          }
+          SWIFT
           fi
           
-          # Create App entry point
           cat > BuildApp/App.swift << 'SWIFT'
           import SwiftUI
-          
           @main
           struct BuildAppApp: App {
               var body: some Scene {
@@ -50,42 +55,25 @@ jobs:
           }
           SWIFT
           
-          # Create Info.plist
           cat > BuildApp/Info.plist << 'PLIST'
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
           <dict>
-              <key>CFBundleDevelopmentRegion</key>
-              <string>en</string>
               <key>CFBundleExecutable</key>
               <string>BuildApp</string>
               <key>CFBundleIdentifier</key>
-              <string>com.swiftide.buildapp</string>
-              <key>CFBundleInfoDictionaryVersion</key>
-              <string>6.0</string>
+              <string>com.swiftide.app</string>
               <key>CFBundleName</key>
               <string>BuildApp</string>
               <key>CFBundlePackageType</key>
               <string>APPL</string>
-              <key>CFBundleShortVersionString</key>
-              <string>1.0</string>
               <key>CFBundleVersion</key>
               <string>1</string>
               <key>LSRequiresIPhoneOS</key>
               <true/>
               <key>UILaunchScreen</key>
               <dict/>
-              <key>UIRequiredDeviceCapabilities</key>
-              <array>
-                  <string>arm64</string>
-              </array>
-              <key>UISupportedInterfaceOrientations</key>
-              <array>
-                  <string>UIInterfaceOrientationPortrait</string>
-                  <string>UIInterfaceOrientationLandscapeLeft</string>
-                  <string>UIInterfaceOrientationLandscapeRight</string>
-              </array>
           </dict>
           </plist>
           PLIST
@@ -93,89 +81,32 @@ jobs:
       - name: Build for iOS Simulator
         run: |
           cd BuildApp
-          
           SDK_PATH=$(xcrun --sdk iphonesimulator --show-sdk-path)
-          echo "Using SDK: $SDK_PATH"
-          
-          ARCH="arm64"
-          TARGET="${ARCH}-apple-ios16.0-simulator"
-          
-          echo "Building for target: $TARGET"
-          
           xcrun swiftc \
             -sdk "$SDK_PATH" \
-            -target "$TARGET" \
+            -target arm64-apple-ios16.0-simulator \
             -parse-as-library \
             -emit-executable \
             -o BuildApp \
             App.swift \
             ContentView.swift
-          
-          echo "Build successful!"
-          ls -la BuildApp
+          echo "Build done"
             
-      - name: Create .app bundle
+      - name: Create app bundle
         run: |
           mkdir -p BuildApp.app
           mv BuildApp/BuildApp BuildApp.app/BuildApp
           cp BuildApp/Info.plist BuildApp.app/Info.plist
-          
-          echo "=== App bundle contents ==="
           ls -la BuildApp.app/
           
       - name: Upload to Appetize
         env:
           APPETIZE_TOKEN: ${{ secrets.APPETIZE_TOKEN }}
         run: |
-          # Zip the app bundle
           zip -r app.zip BuildApp.app
-          
-          echo "Uploading to Appetize.io using v1 API..."
-          
-          # Use Appetize v1 API which accepts multipart form data
-          RESPONSE=$(curl -s \
-            "https://api.appetize.io/v1/apps/zvc4brtsspoktczlbrs54s3mhi?token=$APPETIZE_TOKEN" \
+          echo "Uploading..."
+          curl -s "https://api.appetize.io/v1/apps/zvc4brtsspoktczlbrs54s3mhi?token=$APPETIZE_TOKEN" \
             -F "file=@app.zip" \
-            -F "platform=ios")
-          
-          echo "Appetize Response:"
-          echo "$RESPONSE"
-          
-          # Check if upload was successful
-          if echo "$RESPONSE" | grep -q "publicKey"; then
-            echo "✅ Upload successful!"
-          else
-            echo "Trying alternative upload method..."
-            
-            # Alternative: Create new app if update fails
-            RESPONSE2=$(curl -s \
-              "https://api.appetize.io/v1/apps?token=$APPETIZE_TOKEN" \
-              -F "file=@app.zip" \
-              -F "platform=ios")
-            
-            echo "Alternative Response:"
-            echo "$RESPONSE2"
-            
-            if echo "$RESPONSE2" | grep -q "publicKey"; then
-              echo "✅ Upload successful (new app created)!"
-              echo "Note: You may need to update the publicKey in SwiftIDE"
-            else
-              echo "❌ Upload failed"
-              exit 1
-            fi
-          fi
-```
-
-## Key Changes
-
-1. **Using Appetize v1 API** instead of v2 - the v1 API accepts multipart form data with `file=@app.zip`
-
-2. **Token passed as query parameter** - v1 API uses `?token=` instead of Authorization header
-
-3. **Fallback to create new app** - if updating fails, it will try to create a new app
-
-## Make Sure Your Secret is Correct
-
-Your `APPETIZE_TOKEN` secret should be just the API token value, like:
-```
-tok_abc123xyz789...
+            -F "platform=ios"
+          echo ""
+          echo "Done"

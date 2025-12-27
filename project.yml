@@ -1,7 +1,7 @@
 name: MyApp
 options:
   bundleIdPrefix: neo.uniwalls
-  xcodeVersion: "15.0"
+  xcodeVersion: 15.0
 targets:
   MyApp:
     type: application

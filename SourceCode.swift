@@ -210,7 +210,7 @@ struct ContentView: View {
         name: \(appName)
         options:
           bundleIdPrefix: neo.uniwalls
-          xcodeVersion: "15.0"
+          xcodeVersion: 15.0
         targets:
           \(appName):
             type: application

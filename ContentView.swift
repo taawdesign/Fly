@@ -1,5 +1,4 @@
 import SwiftUI
-import UIKit
 import AVFoundation
 import PDFKit
 import WebKit

@@ -1,45 +1,43 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var counter = 0
+    @State private var todos = ["Buy groceries", "Walk the dog", "Learn Swift"]
+    @State private var newTodo = ""
     
     var body: some View {
-        VStack(spacing: 30) {
-            Text("🚀 SwiftIDE Works!")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-            
-            Text("\(counter)")
-                .font(.system(size: 80, weight: .bold))
-                .foregroundColor(.blue)
-            
-            HStack(spacing: 20) {
-                Button(action: { counter -= 1 }) {
-                    Text("-")
-                        .font(.largeTitle)
-                        .frame(width: 70, height: 70)
-                        .background(Color.red)
-                        .foregroundColor(.white)
-                        .cornerRadius(35)
+        NavigationView {
+            VStack {
+                HStack {
+                    TextField("New todo...", text: $newTodo)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    Button(action: addTodo) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.title)
+                            .foregroundColor(.blue)
+                    }
                 }
+                .padding()
                 
-                Button(action: { counter += 1 }) {
-                    Text("+")
-                        .font(.largeTitle)
-                        .frame(width: 70, height: 70)
-                        .background(Color.green)
-                        .foregroundColor(.white)
-                        .cornerRadius(35)
+                List {
+                    ForEach(todos, id: \.self) { todo in
+                        Text(todo)
+                    }
+                    .onDelete(perform: deleteTodo)
                 }
             }
-            
-            Button("Reset") {
-                counter = 0
-            }
-            .padding()
-            .background(Color.gray.opacity(0.2))
-            .cornerRadius(10)
+            .navigationTitle("My Todos")
         }
-        .padding()
+    }
+    
+    func addTodo() {
+        if !newTodo.isEmpty {
+            todos.append(newTodo)
+            newTodo = ""
+        }
+    }
+    
+    func deleteTodo(at offsets: IndexSet) {
+        todos.remove(atOffsets: offsets)
     }
 }

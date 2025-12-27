@@ -1,12 +1,12 @@
-name: ProReader
+name: MyApp
 options:
   bundleIdPrefix: neo.uniwalls
 targets:
-  ProReader:
+  MyApp:
     type: application
     platform: iOS
     deploymentTarget: 17.0
-    sources: [ProReaderApp.swift]
+    sources: [SourceCode.swift]
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: neo.uniwalls

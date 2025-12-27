@@ -1,31 +1,44 @@
 import SwiftUI
 
-@main
-struct MyApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
-}
-
 struct ContentView: View {
     @State private var counter = 0
     
     var body: some View {
-        VStack(spacing: 24) {
-            Text("Hello, SwiftIDE!")
+        VStack(spacing: 30) {
+            Text("🚀 SwiftIDE Works!")
                 .font(.largeTitle)
                 .fontWeight(.bold)
             
-            Text("Counter: \(counter)")
-                .font(.title2)
+            Text("\(counter)")
+                .font(.system(size: 80, weight: .bold))
+                .foregroundColor(.blue)
             
-            HStack(spacing: 16) {
-                Button("-") { counter -= 1 }
-                Button("+") { counter += 1 }
+            HStack(spacing: 20) {
+                Button(action: { counter -= 1 }) {
+                    Text("-")
+                        .font(.largeTitle)
+                        .frame(width: 70, height: 70)
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                }
+                
+                Button(action: { counter += 1 }) {
+                    Text("+")
+                        .font(.largeTitle)
+                        .frame(width: 70, height: 70)
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                }
             }
-            .font(.title)
+            
+            Button("Reset") {
+                counter = 0
+            }
+            .padding()
+            .background(Color.gray.opacity(0.2))
+            .cornerRadius(10)
         }
         .padding()
     }

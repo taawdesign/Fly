@@ -20,20 +20,12 @@ struct ContentView: View {
             
             Text("Counter: \(counter)")
                 .font(.title2)
-                .foregroundColor(.secondary)
             
             HStack(spacing: 16) {
-                Button(action: { counter -= 1 }) {
-                    Image(systemName: "minus.circle.fill")
-                        .font(.title)
-                }
-                
-                Button(action: { counter += 1 }) {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.title)
-                }
+                Button("-") { counter -= 1 }
+                Button("+") { counter += 1 }
             }
-            .foregroundColor(.blue)
+            .font(.title)
         }
         .padding()
     }

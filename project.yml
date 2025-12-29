@@ -1,8 +1,8 @@
-name: Hoho
+name: Abas
 options:
   bundleIdPrefix: neo.uniwalls
 targets:
-  Hoho:
+  Abas:
     type: application
     platform: iOS
     deploymentTarget: 17.0

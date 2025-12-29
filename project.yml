@@ -1,8 +1,8 @@
-name: Abas
+name: Bobo
 options:
   bundleIdPrefix: neo.uniwalls
 targets:
-  Abas:
+  Bobo:
     type: application
     platform: iOS
     deploymentTarget: 17.0

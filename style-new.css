@@ -653,7 +653,17 @@ body::-webkit-scrollbar {
 /* Flip V letters */
 .flip-v {
     display: inline-block;
+    position: relative;
+    line-height: 0.8;
+}
+
+.flip-v::before {
+    content: "V";
+    display: block;
     transform: scaleY(-1);
+    -webkit-transform: scaleY(-1);
+    -moz-transform: scaleY(-1);
+    -ms-transform: scaleY(-1);
 }
 
 /* ============================================

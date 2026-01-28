@@ -269,20 +269,20 @@ body::-webkit-scrollbar {
 }
 
 .title .version {
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     /* Made bigger */
     font-weight: 500;
     /* Slightly bolder */
-    color: #5AC8FA;
-    /* Changed to blue color */
-    -webkit-text-fill-color: #5AC8FA;
+    color: #8E8E93;
+    /* Changed to grey color */
+    -webkit-text-fill-color: #8E8E93;
     background: none;
     -webkit-background-clip: initial;
     background-clip: initial;
     vertical-align: middle;
     display: inline-block;
-    opacity: 0.8;
-    /* Increased opacity */
+    opacity: 1;
+    /* Full opacity for better visibility */
 }
 
 .subtitle {

@@ -1,0 +1,10 @@
+# Ignore system files
+.DS_Store
+.qoder/
+
+# Ignore large binary files (use GitHub Releases instead)
+*.ipa
+
+# Ignore temporary files
+*.tmp
+*.log

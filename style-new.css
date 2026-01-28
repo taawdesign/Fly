@@ -77,11 +77,6 @@ body {
     padding-right: env(safe-area-inset-right);
     /* Full background coverage - moved from html */
     background-color: #0f0f2d;
-    background-image: linear-gradient(135deg, #0f0f2d 0%, #1a1a3e 50%, #0d0d2b 100%);
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
     color: var(--text-primary);
     overflow-x: hidden;
     position: relative;
@@ -115,7 +110,7 @@ body::-webkit-scrollbar {
     position: absolute;
     border-radius: 50%;
     filter: blur(80px);
-    opacity: 0.6;
+    opacity: 0.3;
     animation: float 20s ease-in-out infinite;
 }
 
@@ -152,8 +147,8 @@ body::-webkit-scrollbar {
     width: 250px;
     height: 250px;
     background: radial-gradient(circle, var(--accent-1) 0%, transparent 70%);
-    bottom: -50px;
-    left: 30%;
+    top: 20%;
+    right: 10%;
     animation-delay: -15s;
     animation-duration: 28s;
 }

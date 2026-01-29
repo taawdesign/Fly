@@ -631,6 +631,8 @@ body::-webkit-scrollbar {
 .footer-text {
     font-size: 0.85rem;
     color: var(--text-tertiary);
+    line-height: 1;
+    vertical-align: baseline;
 }
 
 .footer-brand {
@@ -639,6 +641,8 @@ body::-webkit-scrollbar {
     color: var(--primary-light);
     text-decoration: none;
     transition: var(--transition-fast);
+    line-height: 1;
+    vertical-align: baseline;
 }
 
 .footer-brand:hover {
@@ -649,7 +653,8 @@ body::-webkit-scrollbar {
 .flip-v {
     display: inline-block;
     position: relative;
-    line-height: 0.8;
+    line-height: 1;
+    vertical-align: baseline;
 }
 
 .flip-v::before {
@@ -659,6 +664,7 @@ body::-webkit-scrollbar {
     -webkit-transform: scaleY(-1);
     -moz-transform: scaleY(-1);
     -ms-transform: scaleY(-1);
+    line-height: 1;
 }
 
 /* ============================================

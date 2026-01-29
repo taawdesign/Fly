@@ -18,6 +18,7 @@ const elements = {
     btnStep1: document.getElementById('btn-step1'),
     btnStep2: document.getElementById('btn-step2'),
     lineProgress: document.getElementById('line-progress'),
+    noteLineProgress: document.getElementById('note-line-progress'),
     modal: document.getElementById('successModal'),
     modalMessage: document.getElementById('modalMessage')
 };
@@ -127,6 +128,13 @@ function markStepComplete(step) {
     if (step === 1) {
         setTimeout(() => {
             elements.lineProgress.classList.add('active');
+        }, 300);
+    }
+    
+    // Animate note connector line if step 2 is complete
+    if (step === 2) {
+        setTimeout(() => {
+            elements.noteLineProgress.classList.add('active');
         }, 300);
     }
 }

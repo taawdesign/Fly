@@ -610,6 +610,8 @@ body::-webkit-scrollbar {
     border-radius: 3px;
     position: relative;
     overflow: hidden;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out 0.3s forwards;
 }
 
 .line-progress {
@@ -618,13 +620,15 @@ body::-webkit-scrollbar {
     left: 0;
     width: 100%;
     height: 0%;
-    background: linear-gradient(180deg, var(--primary) 0%, var(--success) 100%);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
     transition: height 0.6s ease-out;
+    opacity: 0;
 }
 
 .line-progress.active {
     height: 100%;
+    opacity: 1;
 }
 
 /* ============================================
@@ -679,13 +683,15 @@ body::-webkit-scrollbar {
 
 .note-connector {
     width: 3px;
-    height: 20px;
+    height: 40px;
     background: rgba(255, 255, 255, 0.1);
-    margin: 0 auto -10px;
+    margin: 0 auto;
     border-radius: 3px;
     position: relative;
     overflow: hidden;
     z-index: 2;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out 0.5s forwards;
 }
 
 .note-connector-line {
@@ -693,14 +699,20 @@ body::-webkit-scrollbar {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: linear-gradient(180deg, var(--accent-1) 0%, var(--accent-1) 100%);
+    height: 0%;
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
-    opacity: 0.7;
+    transition: height 0.6s ease-out;
+    opacity: 0;
+}
+
+.note-connector-line.active {
+    height: 100%;
+    opacity: 1;
 }
 
 .note-container {
-    margin: 10px auto;
+    margin: 0 auto;
     padding: var(--spacing-sm) var(--spacing-md);
     max-width: 500px;
     animation: fadeInUp 0.8s ease-out 0.5s backwards;

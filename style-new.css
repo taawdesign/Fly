@@ -677,8 +677,30 @@ body::-webkit-scrollbar {
    Important Note
    ============================================ */
 
+.note-connector {
+    width: 3px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 0 auto -10px;
+    border-radius: 3px;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.note-connector-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, var(--accent-1) 0%, var(--accent-1) 100%);
+    border-radius: 3px;
+    opacity: 0.7;
+}
+
 .note-container {
-    margin: var(--spacing-sm) auto;
+    margin: 10px auto;
     padding: var(--spacing-sm) var(--spacing-md);
     max-width: 500px;
     animation: fadeInUp 0.8s ease-out 0.5s backwards;

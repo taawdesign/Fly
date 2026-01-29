@@ -626,6 +626,33 @@ body::-webkit-scrollbar {
 }
 
 /* ============================================
+   Important Note
+   ============================================ */
+
+.note-container {
+    margin: var(--spacing-md) auto;
+    padding: var(--spacing-sm) var(--spacing-md);
+    max-width: 500px;
+    animation: fadeInUp 0.8s ease-out 0.5s backwards;
+    border-left: 3px solid var(--accent-1);
+}
+
+.note-content {
+    text-align: center;
+}
+
+.note-content p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.note-content strong {
+    color: var(--accent-1);
+}
+
+/* ============================================
    Footer
    ============================================ */
 

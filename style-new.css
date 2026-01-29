@@ -636,7 +636,7 @@ body::-webkit-scrollbar {
     justify-content: center;
     align-items: center;
     gap: var(--spacing-xs);
-    margin: var(--spacing-md) 0;
+    margin: var(--spacing-sm) 0;
     padding: var(--spacing-sm) 0;
 }
 
@@ -665,7 +665,7 @@ body::-webkit-scrollbar {
     background: rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.25);
     color: var(--text-primary);
-    transform: translateY(-2px);
+    /* Removed transform to prevent zooming */
 }
 
 .social-icon {
@@ -678,7 +678,7 @@ body::-webkit-scrollbar {
    ============================================ */
 
 .note-container {
-    margin: var(--spacing-md) auto;
+    margin: var(--spacing-sm) auto;
     padding: var(--spacing-sm) var(--spacing-md);
     max-width: 500px;
     animation: fadeInUp 0.8s ease-out 0.5s backwards;

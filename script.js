@@ -18,7 +18,7 @@ const elements = {
     btnStep1: document.getElementById('btn-step1'),
     btnStep2: document.getElementById('btn-step2'),
     lineProgress: document.getElementById('line-progress'),
-    noteLineProgress: document.getElementById('note-line-progress'),
+    footerLineProgress: document.getElementById('footer-line-progress'),
     modal: document.getElementById('successModal'),
     modalMessage: document.getElementById('modalMessage'),
     versionText: document.getElementById('version-text')
@@ -57,6 +57,9 @@ function init() {
 
     // Add touch feedback for mobile
     addTouchFeedback();
+    
+    // Add connection line hover effects
+    addConnectionLineHoverEffects();
 }
 
 /**
@@ -156,10 +159,10 @@ function markStepComplete(step) {
         }, 300);
     }
     
-    // Animate note connector line if step 2 is complete
+    // Animate footer connector line if step 2 is complete
     if (step === 2) {
         setTimeout(() => {
-            elements.noteLineProgress.classList.add('active');
+            elements.footerLineProgress.classList.add('active');
         }, 300);
     }
 }
@@ -249,6 +252,57 @@ function addTouchFeedback() {
             btn.style.transform = '';
         }, { passive: true });
     });
+}
+
+/**
+ * Add hover effects for connection lines to maintain connection during hover
+ */
+function addConnectionLineHoverEffects() {
+    // First connection line (between step 1 and step 2)
+    const step1 = document.getElementById('step1');
+    const connectionLine1 = document.querySelector('.connection-line');
+    
+    if (step1 && connectionLine1) {
+        step1.addEventListener('mouseenter', () => {
+            connectionLine1.style.height = '36px';
+            connectionLine1.style.transform = 'translateY(-1px)';
+        });
+        
+        step1.addEventListener('mouseleave', () => {
+            connectionLine1.style.height = '';
+            connectionLine1.style.transform = '';
+        });
+    }
+    
+    // Second connection line (between step 2 and footer)
+    const step2 = document.getElementById('step2');
+    const connectionLine2 = document.getElementById('footer-line-progress').closest('.connection-line');
+    
+    if (step2 && connectionLine2) {
+        step2.addEventListener('mouseenter', () => {
+            connectionLine2.style.height = '36px';
+            connectionLine2.style.transform = 'translateY(-1px)';
+        });
+        
+        step2.addEventListener('mouseleave', () => {
+            connectionLine2.style.height = '';
+            connectionLine2.style.transform = '';
+        });
+    }
+    
+    // Footer hover effect
+    const footerWrapper = document.querySelector('.social-footer-wrapper');
+    if (footerWrapper && connectionLine2) {
+        footerWrapper.addEventListener('mouseenter', () => {
+            connectionLine2.style.height = '36px';
+            connectionLine2.style.transform = 'translateY(-1px)';
+        });
+        
+        footerWrapper.addEventListener('mouseleave', () => {
+            connectionLine2.style.height = '';
+            connectionLine2.style.transform = '';
+        });
+    }
 }
 
 /**

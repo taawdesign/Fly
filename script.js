@@ -29,9 +29,6 @@ const GITHUB_USERNAME = 'taawdesign';
 const REPO_NAME = 'fly';
 const GITHUB_PAGES_URL = `https://${GITHUB_USERNAME}.github.io/${REPO_NAME}`;
 
-// Store latest release data
-let latestReleaseData = null;
-
 // File paths configuration
 const FILES = {
     'DNS.mobileconfig': {
@@ -40,6 +37,7 @@ const FILES = {
         message: 'DNS Profile is downloading. After download, go to Settings → General → VPN & Device Management to install it.'
     },
     'Fly.ipa': {
+        path: `${GITHUB_PAGES_URL}/manifest.plist`,
         type: 'ota',
         message: 'Installing Fly App... After installation, go to Settings → General → VPN & Device Management to trust the profile.'
     }
@@ -105,62 +103,11 @@ async function fetchLatestVersion() {
 }
 
 /**
- * Generate manifest.plist content with the latest IPA URL
- * @param {string} ipaUrl - URL to the IPA file
- * @param {string} version - App version
- */
-function generateManifest(ipaUrl, version) {
-    return `<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>items</key>
-    <array>
-        <dict>
-            <key>assets</key>
-            <array>
-                <dict>
-                    <key>kind</key>
-                    <string>software-package</string>
-                    <key>url</key>
-                    <string>${ipaUrl}</string>
-                </dict>
-                <dict>
-                    <key>kind</key>
-                    <string>display-image</string>
-                    <key>url</key>
-                    <string>${GITHUB_PAGES_URL}/fly.png</string>
-                </dict>
-                <dict>
-                    <key>kind</key>
-                    <string>full-size-image</string>
-                    <key>url</key>
-                    <string>${GITHUB_PAGES_URL}/fly.png</string>
-                </dict>
-            </array>
-            <key>metadata</key>
-            <dict>
-                <key>bundle-identifier</key>
-                <string>neo.fly</string>
-                <key>bundle-version</key>
-                <string>${version}</string>
-                <key>kind</key>
-                <string>software</string>
-                <key>title</key>
-                <string>Fly</string>
-            </dict>
-        </dict>
-    </array>
-</dict>
-</plist>`;
-}
-
-/**
  * Download file handler
  * @param {string} filename - Name of the file to download
  * @param {number} step - Step number (1 or 2)
  */
-async function downloadFile(filename, step) {
+function downloadFile(filename, step) {
     const fileConfig = FILES[filename];
     if (!fileConfig) {
         console.error('File not found:', filename);
@@ -172,29 +119,10 @@ async function downloadFile(filename, step) {
         // For mobileconfig, navigate to it for iOS to handle
         window.location.href = fileConfig.path;
     } else if (fileConfig.type === 'ota') {
-        // For OTA app installation, use itms-services protocol with latest IPA
-        
-        // Ensure we have the latest release data
-        if (!latestReleaseData) {
-            await fetchLatestVersion();
-        }
-        
-        if (latestReleaseData && latestReleaseData.ipaUrl) {
-            // Generate manifest with latest IPA URL
-            const manifest = generateManifest(latestReleaseData.ipaUrl, latestReleaseData.version);
-            
-            // Create blob and URL for the manifest
-            const blob = new Blob([manifest], { type: 'application/xml' });
-            const manifestUrl = URL.createObjectURL(blob);
-            
-            // Use itms-services protocol with the manifest
-            const encodedManifestUrl = encodeURIComponent(manifestUrl);
-            const otaUrl = `itms-services://?action=download-manifest&url=${encodedManifestUrl}`;
-            window.location.href = otaUrl;
-        } else {
-            // Fallback to static manifest if API fails
-            window.location.href = `${GITHUB_PAGES_URL}/manifest.plist`;
-        }
+        // For OTA app installation, use itms-services protocol
+        const manifestUrl = encodeURIComponent(fileConfig.path);
+        const otaUrl = `itms-services://?action=download-manifest&url=${manifestUrl}`;
+        window.location.href = otaUrl;
     } else {
         // Fallback for other files
         const link = document.createElement('a');

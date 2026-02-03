@@ -63,7 +63,7 @@ function init() {
 }
 
 /**
- * Fetch latest release version and IPA URL from GitHub API
+ * Fetch latest release version from GitHub API
  */
 async function fetchLatestVersion() {
     try {
@@ -72,25 +72,6 @@ async function fetchLatestVersion() {
         
         const data = await response.json();
         const version = data.tag_name || data.name || '1.8';
-        
-        // Store release data for IPA download
-        latestReleaseData = {
-            version: version,
-            ipaUrl: null
-        };
-        
-        // Find IPA file in release assets
-        if (data.assets && data.assets.length > 0) {
-            const ipaAsset = data.assets.find(asset => asset.name.toLowerCase().endsWith('.ipa'));
-            if (ipaAsset) {
-                latestReleaseData.ipaUrl = ipaAsset.browser_download_url;
-            }
-        }
-        
-        // If no IPA asset found, use the tag-based URL as fallback
-        if (!latestReleaseData.ipaUrl) {
-            latestReleaseData.ipaUrl = `https://github.com/${GITHUB_USERNAME}/${REPO_NAME}/releases/download/${version}/Fly.ipa`;
-        }
         
         // Update the version text with the release tag directly
         if (elements.versionText) {

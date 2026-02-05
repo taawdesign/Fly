@@ -37,9 +37,9 @@ const FILES = {
         message: 'DNS Profile is downloading. After download, go to Settings → General → VPN & Device Management to install it.'
     },
     'Fly.ipa': {
-        path: `${GITHUB_PAGES_URL}/manifest.plist`,
-        type: 'ota',
-        message: 'Installing Fly App... After installation, go to Settings → General → VPN & Device Management to trust the profile.'
+        path: 'https://github.com/taawdesign/fly/releases/download/v1.9/Fly.ipa',
+        type: 'direct',
+        message: 'Fly App is downloading. After download, go to Settings → General → VPN & Device Management to trust the profile.'
     }
 };
 
@@ -99,6 +99,12 @@ function downloadFile(filename, step) {
     if (fileConfig.type === 'profile') {
         // For mobileconfig, navigate to it for iOS to handle
         window.location.href = fileConfig.path;
+    } else if (fileConfig.type === 'direct') {
+        // For direct download, create anchor element
+        const link = document.createElement('a');
+        link.href = fileConfig.path;
+        link.download = filename;
+        link.click();
     } else if (fileConfig.type === 'ota') {
         // For OTA app installation, use itms-services protocol
         const manifestUrl = encodeURIComponent(fileConfig.path);
